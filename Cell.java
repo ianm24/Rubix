@@ -4,8 +4,6 @@
  *
  */
 public class Cell {
-	private static final String[] VALID_COLORS = {"red", "blue", "orange", "green", "white", "black"};
-	
 	public String color;
 	public int[] location;
 	
@@ -29,12 +27,11 @@ public class Cell {
 	 * @throws InvalidColorException if color is not validZ 
 	 */
 	private void setColor(String color) throws Exception{
-		for(String vColor : VALID_COLORS) {
-			if(vColor.equalsIgnoreCase(color)) {
-				this.color = color;
-			}
+		if (ColorData.isColorValid(color)) {
+			this.color = color;
+		} else {
+			throw new Exception("Cell color must be one of the following: " + ColorData.VALID_COLORS);
 		}
-		throw new Exception("Cell color must be one of the following: " + VALID_COLORS);
 	}
 		
 	/**
@@ -55,7 +52,11 @@ public class Cell {
 	 * Returns information about Cell as string
 	 */
 	public String toString() {
-		return "Color: " + this.color + "\nLocation: " + this.location;
+		String locStr = "(";
+		for(int coord : this.location) {
+			locStr += coord + ", ";
+		}
+		return "Color: " + this.color + "\nLocation: " + locStr + ")\n";
 	}
 
 }

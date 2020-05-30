@@ -8,7 +8,22 @@ public class Face {
 	public Cell[][] cells;
 	
 	/**
-	 * Constructor for new Faces
+	 * Constructor for new Faces with homogeneous Cell color
+	 * @param size
+	 * @param color
+	 */
+	public Face(int[] size, String color) {
+		try {
+			this.setSize(size);
+			this.setCellsHomogeneous(color);
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		
+	}
+	
+	/**
+	 * Constructor for new Faces with specific Cells
 	 * @param size 2-element array containing number of rows and columns
 	 * @param cells 2-dimensional matrix containing all cells in a face
 	 */
@@ -53,18 +68,42 @@ public class Face {
 	}
 	
 	/**
+	 * Sets the Face's Cell matrix with homogeneous color
+	 * @param color The color of all Cells in the Face
+	 */
+	private void setCellsHomogeneous(String color) {
+		Cell[][] cells = new Cell[size[0]][size[1]];
+		for(int i = 0; i < this.size[0]; i++) {
+			for(int j = 0; j < this.size[1]; j++) {
+				cells[i][j] = new Cell(color, new int[]{i,j});
+			}
+		}
+		this.cells = cells;
+	}
+	
+	/**
 	 * Returns information about Face as string
 	 */
 	public String toString() {
-		String cellStr = "";
+		String sizeStr = "(";
+		for(int i = 0; i < this.size.length; i++) {
+			sizeStr += this.size[i];
+			if(i != this.size.length - 1) {
+				sizeStr += ", ";
+			}
+		}
+		String cellStr = new String();
 		for(int i = 0; i < this.cells.length; i++) {
 			cellStr += "|";
-			for(int j = 0; j < this.cells[i].length; i++) {
-				cellStr += "\t" + this.cells[i][j].color.charAt(0);
+			for(int j = 0; j < this.cells[i].length; j++) {
+				cellStr += this.cells[i][j].color.charAt(0);
+				if(j != this.cells[i].length-1) {
+					cellStr += " ";
+				}
 			}
 			cellStr += "|\n";
 		}
-		return "Size: " + this.size + "Cells: " + cellStr;
+		return "Size: " + sizeStr + ")\nCells:\n" + cellStr;
 	}
 
 }
